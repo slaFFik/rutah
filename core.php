@@ -226,7 +226,7 @@ class RutahThemeAdmin{
      * Leave it there, please :)
      */
     function display_footer_credits(){
-        echo '<a href="http://ovirium.com/portfolio/rutah-theme-admin/" target="_blank">'.__('Created with RUTAH Theme Admin framework', 'rutah').'</a>
+        echo '<a href="http://ovirium.com/portfolio/rutah/" target="_blank">'.__('Created with RUTAH framework', 'rutah').'</a>
             | <a href="http://twitter.com/slaFFik" target="_blank">@slaFFik</a>';
     }
 
