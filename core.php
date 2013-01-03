@@ -2,15 +2,15 @@
 /**
  * Main class with the bone of an admin area of a theme
  */
-class RapidThemeAdmin{
+class RutahThemeAdmin{
     // page title
-    var $page         = 'Rapid Admin';
+    var $page         = 'Rutah Admin';
     // tagline/moto be displayed under title
     // leave blank to hide
     var $tagline      = 'Create something awesome';
 
     // used to store data in `wp_options` table
-    var $option_name  = 'rapid';
+    var $option_name  = 'rutah';
 
     // leave blank to hide
     var $ver          = '1.0';
@@ -128,16 +128,16 @@ class RapidThemeAdmin{
         add_action('admin_print_scripts-' . $this->admin_page, array(&$this,'load_assets_js'));
     }
     function load_assets_js(){
-        wp_register_script('bpap_formee', $this->theme_url . '/_admin/rapid/js/formee.js', array('jquery'), '3.1');
+        wp_register_script('bpap_formee', $this->theme_url . '/_admin/rutah/js/formee.js', array('jquery'), '3.1');
 
         wp_enqueue_script('bpap_formee');
     }
     function load_assets_css(){
-        wp_register_style('rapid_admin_css', $this->theme_url . '/_admin/rapid/css/admin.css',  false, $this->ver);
-        wp_register_style('rapid_formee',    $this->theme_url . '/_admin/rapid/css/formee.css', false, '3.1');
+        wp_register_style('rutah_admin_css', $this->theme_url . '/_admin/rutah/css/admin.css',  false, $this->ver);
+        wp_register_style('rutah_formee',    $this->theme_url . '/_admin/rutah/css/formee.css', false, '3.1');
 
-        wp_enqueue_style('rapid_admin_css');
-        wp_enqueue_style('rapid_formee');
+        wp_enqueue_style('rutah_admin_css');
+        wp_enqueue_style('rutah_formee');
     }
 
     /************************ Display Section ************************/
@@ -149,7 +149,7 @@ class RapidThemeAdmin{
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->def_page;
         ?>
 
-        <div id="rapid-admin" class="wrap">
+        <div id="rutah-admin" class="wrap">
 
             <?php $this->display_header(); ?>
 
@@ -226,7 +226,7 @@ class RapidThemeAdmin{
      * Leave it there, please :)
      */
     function display_footer_credits(){
-        echo '<a href="http://ovirium.com/portfolio/rapid-theme-admin/" target="_blank">'.__('Created with Rapid Theme Admin framework', 'rapid').'</a>
+        echo '<a href="http://ovirium.com/portfolio/rutah-theme-admin/" target="_blank">'.__('Created with RUTAH Theme Admin framework', 'rutah').'</a>
             | <a href="http://twitter.com/slaFFik" target="_blank">@slaFFik</a>';
     }
 
@@ -236,8 +236,8 @@ class RapidThemeAdmin{
     function display_notices(){
         $message = false;
 
-        if(isset($_COOKIE['rapid_message'])){
-            $message = $_COOKIE['rapid_message'];
+        if(isset($_COOKIE['rutah_message'])){
+            $message = $_COOKIE['rutah_message'];
         }
 
         if(isset($_GET['message']))
@@ -249,12 +249,12 @@ class RapidThemeAdmin{
         switch($message){
             case 'settings_saved':
                 echo '<div class="updated">
-                   <p>'.__('Settings were successfully saved.', 'rapid').'</p>
+                   <p>'.__('Settings were successfully saved.', 'rutah').'</p>
                 </div>';
                 break;
             case 'settings_saved_error':
                 echo '<div class="error">
-                   <p>'.__('Nothing to save OR there was an error while saving settings.', 'rapid').'</p>
+                   <p>'.__('Nothing to save OR there was an error while saving settings.', 'rutah').'</p>
                 </div>';
                 break;
         }
@@ -265,7 +265,7 @@ class RapidThemeAdmin{
 /**
  * Class that will be a skeleton for all other pages
  */
-class RapidThemeAdminPage {
+class RutahThemeAdminPage {
     // all these vars are required and should be overwritten
     var $position = 0;
     var $title    = 'Example Page';

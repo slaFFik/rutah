@@ -1,44 +1,44 @@
 /**
  * General styles
  */
-#rapid-admin .p_margin {
+#rutah-admin .p_margin {
     margin: 15px 0;
 }
 
-#rapid-admin .divider {
+#rutah-admin .divider {
     padding-right: 20px;
     border-right: 2px solid #DDD;
     margin-right: 20px;
 }
 
-#rapid-admin h4{
+#rutah-admin h4{
     font-size: 160%;
 }
-    #rapid-admin h4 a{
+    #rutah-admin h4 a{
         margin-left: 15px;
     }
 
-#rapid-admin h5{
+#rutah-admin h5{
     font-size: 1.1em;
     margin-bottom: 10px;
     margin-top: 0px;
 }
 
-#rapid-admin .full_label{
+#rutah-admin .full_label{
     display: block;
 }
 
 /**
  * Table - List of items
  */
-#rapid-admin .tablenav select[name="action"]{
+#rutah-admin .tablenav select[name="action"]{
     width: auto;
 }
 
 /**
  * Admin area Footer
  */
-#rapid-admin #bottom{
+#rutah-admin #bottom{
     border-top:1px solid #ccc;
     margin-top:15px;
     padding-top:15px;
