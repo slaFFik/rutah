@@ -18,6 +18,9 @@ class RutahThemeAdmin{
     // all pages are stored here
     var $pages        = array();
 
+    // list of notices used on during operating with data
+    var $notices = array();
+
     // default page(tab) that will be loaded
     var $def_page     = '';
 
@@ -223,7 +226,7 @@ class RutahThemeAdmin{
     }
     /**
      * Credentials of who created the framework
-     * Leave it there, please :)
+     * Leave it on its place, please :)
      */
     function display_footer_credits(){
         echo '<a href="http://ovirium.com/portfolio/rutah/" target="_blank">'.__('Created with RUTAH framework', 'rutah').'</a>
@@ -233,6 +236,21 @@ class RutahThemeAdmin{
     /**
      * Some basic notices on saving options
      */
+    function set_notices_settings_saved_error($message){
+        $this->notices['settings_saved_error'] = $message;
+    }
+    function set_notices_settings_saved($message){
+        $this->notices['settings_saved'] = $message;
+    }
+
+    function set_notices_default(){
+        if(!isset($this->notices['settings_saved_error']) || empty($this->notices['settings_saved_error']))
+            $this->notices['settings_saved_error'] = __('Nothing to save OR there was an error while saving settings.', 'rutah');
+
+        if(!isset($this->notices['settings_saved']) || empty($this->notices['settings_saved']))
+            $this->notices['settings_saved'] = __('Settings were successfully saved.', 'rutah');
+    }
+
     function display_notices(){
         $message = false;
 
@@ -246,15 +264,18 @@ class RutahThemeAdmin{
         if(!$message)
             return;
 
+        // Some default messages/notices
+        $this->set_notices_default();
+
         switch($message){
             case 'settings_saved':
                 echo '<div class="updated">
-                   <p>'.__('Settings were successfully saved.', 'rutah').'</p>
+                   <p>'.$this->notices['settings_saved'].'</p>
                 </div>';
                 break;
             case 'settings_saved_error':
                 echo '<div class="error">
-                   <p>'.__('Nothing to save OR there was an error while saving settings.', 'rutah').'</p>
+                   <p>'.$this->notices['settings_saved_error'].'</p>
                 </div>';
                 break;
         }
