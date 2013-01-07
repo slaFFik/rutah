@@ -23,8 +23,9 @@ class RutahThemeAdmin{
 
     // default page(tab) that will be loaded
     var $def_page     = '';
+    var $cur_page     = '';
 
-    // will be defined in __contruct()
+    // will be defined in __construct()
     // used to include default css and js
     // no trailing slash
     var $theme_url    = '';
@@ -52,7 +53,7 @@ class RutahThemeAdmin{
     /**
      * Scan specific folder and get all pages to display
      */
-    function add_pages(){
+    final function add_pages(){
         // read the pages folder
         if(empty($this->pages_path)){
             $this->pages_path = dirname(__FILE__) . '/pages';
@@ -78,7 +79,7 @@ class RutahThemeAdmin{
      * @param  array $pages All pages in any order (the includence order)
      * @return array        All pages reordered
      */
-    function reorder_pages(){
+    final function reorder_pages(){
         if(empty($this->pages) || !is_array($this->pages))
             return;
 
@@ -86,6 +87,7 @@ class RutahThemeAdmin{
             $tmp[$page->position] = $page;
         }
 
+        // make smaller position at the top of an array
         ksort($tmp);
         $this->pages = $tmp;
         unset($tmp);
@@ -95,14 +97,42 @@ class RutahThemeAdmin{
             $first = reset($this->pages);
             $this->def_page = $first->slug;
         }
+
+        // set default tab if not already
+        if(empty($this->cur_page)){
+            $this->cur_page = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->def_page;
+        }
     }
 
+    /************************ Saving process ************************/
     /**
      * All submitted form data will be saved here
      */
-    function save_data(){
-        if(!empty($_POST))
-            print_var($_POST);
+    final function save_data(){
+        if(!isset($_POST[$this->option_name]) || empty($_POST[$this->option_name]))
+            return;
+
+        // make the var shorter :)
+        $post = $_POST[$this->option_name];
+        $link = $_POST['_wp_http_referer'];
+
+        $checked = apply_filters($this->option_name . '_options_' . $this->cur_page, $post);
+
+        $this->options = array_merge($this->options, $checked);
+
+        // Save settings
+        $save_status = 'settings_saved_error';
+        if(update_option($this->option_name, $this->options)){
+            $save_status = 'settings_saved';
+        }
+
+        $link = add_query_arg(array(
+                                'message' => $save_status,
+                                'tab'     => $this->cur_page
+                            ), $link);
+
+        wp_redirect($link);
+        die;
     }
 
     /************************ Admin Link & Assets ************************/
@@ -147,11 +177,7 @@ class RutahThemeAdmin{
     /**
      * Main content with the submit form
      */
-    function display(){
-        // default tab if not on it already
-        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->def_page;
-        ?>
-
+    function display(){?>
         <div id="rutah-admin" class="wrap">
 
             <?php $this->display_header(); ?>
@@ -160,7 +186,7 @@ class RutahThemeAdmin{
                 <?php
                 wp_nonce_field( $this->option_name . '-update-options' );
                 // all the content will appear right here
-                do_settings_sections( $tab );
+                do_settings_sections( $this->cur_page );
                 ?>
             </form>
 
@@ -176,23 +202,20 @@ class RutahThemeAdmin{
      * What will de displayed before tabs
      */
     function display_header(){
-        // default tab if not on it already
-        $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $this->def_page;
+        $this->display_header_icon();
 
-        $this->display_header_icon($current_tab);
+        $this->display_header_title();
 
-        $this->display_header_title($current_tab);
+        $this->display_notices();
 
-        $this->display_notices($current_tab);
-
-        $this->display_header_tabs($current_tab);
+        $this->display_header_tabs();
     }
     // icon
-    function display_header_icon($current_tab){
+    function display_header_icon(){
         screen_icon('themes');
     }
     // title of a page and its tagline
-    function display_header_title($current_tab){
+    function display_header_title(){
         echo '<h2>';
             echo '<span class="divider">';
                 echo $this->page;
@@ -206,10 +229,10 @@ class RutahThemeAdmin{
         echo '</h2>';
     }
     // navigation tabs
-    function display_header_tabs($current_tab){
+    function display_header_tabs(){
         echo '<h3 class="nav-tab-wrapper">';
         foreach ( (array)$this->pages as $page ) {
-            $active = $current_tab == $page->slug ? 'nav-tab-active' : '';
+            $active = $this->cur_page == $page->slug ? 'nav-tab-active' : '';
             echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->option_name . '&tab=' . $page->slug . '">' . $page->title . '</a>';
         }
         echo '</h3>';
@@ -233,19 +256,22 @@ class RutahThemeAdmin{
             | <a href="http://twitter.com/slaFFik" target="_blank">@slaFFik</a>';
     }
 
+    /************************ Notices ************************/
     /**
      * Some basic notices on saving options
      */
+    // not saved because of an error
     function set_notices_settings_saved_error($message){
         $this->notices['settings_saved_error'] = $message;
     }
+    // saved successfully
     function set_notices_settings_saved($message){
         $this->notices['settings_saved'] = $message;
     }
 
     function set_notices_default(){
         if(!isset($this->notices['settings_saved_error']) || empty($this->notices['settings_saved_error']))
-            $this->notices['settings_saved_error'] = __('Nothing to save OR there was an error while saving settings.', 'rutah');
+            $this->notices['settings_saved_error'] = __('Nothing to save (data was not changed) OR there was an error while saving settings.', 'rutah');
 
         if(!isset($this->notices['settings_saved']) || empty($this->notices['settings_saved']))
             $this->notices['settings_saved'] = __('Settings were successfully saved.', 'rutah');
@@ -280,17 +306,22 @@ class RutahThemeAdmin{
                 break;
         }
     }
-
 }
+
+/************************ One Admin Page Parent Class ************************/
 
 /**
  * Class that will be a skeleton for all other pages
  */
 class RutahThemeAdminPage {
     // all these vars are required and should be overwritten
-    var $position = 0;
-    var $title    = 'Example Page';
-    var $slug     = 'example';
+    var $position    = 0;
+    var $title       = 'Example Page';
+    var $slug        = 'example';
+    var $option_name = 'rutah';
+
+    // all theme options
+    var $options     = array();
 
     /**
      * Create the actual page object
@@ -303,6 +334,12 @@ class RutahThemeAdminPage {
             array(&$this, 'display'), // method handler
             $this->slug // slug
         );
+
+        // get all theme options only once
+        $this->options = get_option($this->option_name, array());
+
+        // init the save process
+        add_filter($this->option_name . '_options_' . $this->slug, array(&$this, 'save'));
     }
 
     /**
@@ -310,5 +347,43 @@ class RutahThemeAdminPage {
      */
     function display(){
         print_var($this);
+    }
+
+    /**
+     * All security and data checks should be here
+     * NO SAVING - just checking values submitted by users
+     * This method SHOULD BE CALLED IN PARENT PAGES
+     */
+    function save(){
+        // prepare that we have smth to save
+        if(!isset($_POST[$this->option_name][$this->slug]) ||
+            empty($_POST[$this->option_name][$this->slug]))
+        {
+            return $this->options;
+        }
+
+        // all checks will be below in child classes
+    }
+
+    /************************* Form Elements *************************/
+    /**
+     * Below are several helpers to make form items creation easier
+     */
+    function form_get_name($name){
+        return 'name="'.$this->option_name.'['.$this->slug.']['.$name.']"';
+    }
+
+    function form_get_value($name){
+        if(empty($name))
+            return;
+
+        return $this->options[$this->slug][$name];
+    }
+
+    function form_get_submit($value = false){
+        if(empty($value))
+            $value = __('Save');
+
+        return '<input type="submit" value="'.$value.'" />';
     }
 }
