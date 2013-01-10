@@ -70,7 +70,7 @@ In future this may be changed if more functionality needed.
     }
 ```
 
-That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Design section in WordPress sidebar navigation menu.
+That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Appearance section in WordPress sidebar navigation menu.
 
 ### Create different pages
 
@@ -113,16 +113,8 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
 That's all. Now you have a page for a theme admin area with 1 input, that saves data.
 All security checks should be done in `Milk_Layout::save()` method.
 
+# Screenshot
 
+Below you can see how this all will look like. You can also see how data is stored in `wp-options` table.
 
-
-
-
-
-
-
-
-
-
-
-
+<a href="http://content.screencast.com/users/slaFFik/folders/Jing/media/af366039-e25a-45cd-bb0f-aad832bb5eb8/2013-01-10_1735.png"><img class="embeddedObject" src="http://content.screencast.com/users/slaFFik/folders/Jing/media/af366039-e25a-45cd-bb0f-aad832bb5eb8/2013-01-10_1735.png" width="655" height="451" border="0" />
