@@ -78,7 +78,7 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
 
 1. Create a blank file called `layout.php` and place it `pages/` folder as defined on  `Milk_Admin::__construct()`.
 2. Put the code provided below in that file.
-    
+```php
     class Milk_Layout extends RutahThemeAdminPage{
         var $position    = 1;
         var $slug        = 'layout';
@@ -103,7 +103,8 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
     }
     
     return new Milk_Layout;
-    
+``` 
+
 3. Make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
 
 That's all. Now you have a page for a theme admin area with 1 input, that saves data.
