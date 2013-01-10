@@ -38,6 +38,7 @@ In future this may be changed if more functionality needed.
 
 (Almost) all  themes have `functions.php` file. So just include there a file called `milk.php` with the code below:
 
+```php
     // check that we don't have parent class included elsewhere
     if(!class_exists('RutahThemeAdmin'))
         include(basename(__FILE__) . '/_admin/rutah/rutah.php');
@@ -67,6 +68,7 @@ In future this may be changed if more functionality needed.
     if(is_admin()){
         new Milk_Admin;
     }
+```
 
 That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Design section in WordPress sidebar navigation menu.
 
@@ -78,6 +80,7 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
 
 1. Create a blank file called `layout.php` and place it `pages/` folder as defined on  `Milk_Admin::__construct()`.
 2. Put the code provided below in that file.
+
 ```php
     class Milk_Layout extends RutahThemeAdminPage{
         var $position    = 1;
@@ -105,7 +108,7 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
     return new Milk_Layout;
 ``` 
 
-3. Make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
+**Note:** Please make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
 
 That's all. Now you have a page for a theme admin area with 1 input, that saves data.
 All security checks should be done in `Milk_Layout::save()` method.
