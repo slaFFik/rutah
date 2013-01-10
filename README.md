@@ -1,5 +1,4 @@
-What is Rutah?
-=====
+# What is Rutah?
 
 RUTAH stands for **Rapid and Unified Theme Admin Ham**. Why Ham? It could be hawk, or haven or whatever. But I just like ham.
 
@@ -7,8 +6,9 @@ You can use Rutah to easily create admin area for your themes. That means - the 
 
 ----------
 
-Rutah structure
-=====
+# Rutah inside
+
+### File Structure
 
 It's very minimalistic. All the logic, php code and processors are in 1 php file - `rutah.php`.
 
@@ -21,6 +21,8 @@ It's very minimalistic. All the logic, php code and processors are in 1 php file
 
 I use [Formee](http://www.formee.org/ "Framework to help you develop and customize web based forms") to make the form nicer. It can be easily disabled via commenting appropriate lines in `rutah.php` or overwriting the `load_assets_js()` and `load_assets_css()` methods.
 
+### Code structure
+
 `rutah.php` contains (currently) 2 classes:
 
 * **RutahThemeAdmin** (responsible for the whole logic and data management)
@@ -30,8 +32,9 @@ In future this may be changed if more functionality needed.
 
 ----------
 
-How to use Rutah?
-=====
+# How to use Rutah?
+
+### Create theme admin area
 
 (Almost) all  themes have `functions.php` file. So just include there a file called `milk.php` with the code below:
 
@@ -66,3 +69,56 @@ How to use Rutah?
     }
 
 That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Design section in WordPress sidebar navigation menu.
+
+### Create different pages
+
+All options (imo) should be categorized. I like to use pages for that. So all Slideshow options will be on *Slideshow* page.
+
+Its creation is easy as well. Here is the example of creating a page called *Layout*.
+
+1. Create a blank file called `layout.php` and place it `pages/` folder as defined on  `Milk_Admin::__construct()`.
+2. Put the code provided below in that file.
+
+    class Milk_Layout extends RutahThemeAdminPage{
+        var $position    = 1;
+        var $slug        = 'layout';
+        var $option_name = 'milk';
+    
+        function __construct(){
+            $this->title = __('Layout', 'ovidi');
+    
+            parent::__construct();
+        }
+    
+        function display(){
+            echo '<input type="text" '.$this->form_get_name('slug').' value="'.$this->form_get_value('slug').'" />';
+            echo $this->form_get_submit();
+        }
+    
+        function save(){
+            parent::save();
+    
+            return $_POST[$this->option_name];
+        }
+    }
+
+    return new OviDi_Layout;
+
+3. Make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
+
+That's all. Now you have a page for a theme admin area with 1 input, that saves data.
+All security checks should be done in `Milk_Layout::save()` method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
