@@ -78,32 +78,32 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
 
 1. Create a blank file called `layout.php` and place it `pages/` folder as defined on  `Milk_Admin::__construct()`.
 2. Put the code provided below in that file.
-
+    
     class Milk_Layout extends RutahThemeAdminPage{
         var $position    = 1;
         var $slug        = 'layout';
         var $option_name = 'milk';
-    
+        
         function __construct(){
             $this->title = __('Layout', 'ovidi');
-    
+            
             parent::__construct();
         }
-    
+        
         function display(){
             echo '<input type="text" '.$this->form_get_name('slug').' value="'.$this->form_get_value('slug').'" />';
             echo $this->form_get_submit();
         }
-    
+        
         function save(){
             parent::save();
-    
+        
             return $_POST[$this->option_name];
         }
     }
-
-    return new OviDi_Layout;
-
+    
+    return new Milk_Layout;
+    
 3. Make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
 
 That's all. Now you have a page for a theme admin area with 1 input, that saves data.
