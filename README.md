@@ -108,7 +108,9 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
     return new Milk_Layout;
 ``` 
 
-**Note:** Please make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
+**Note:** 
+* Please make sure that `Milk_Layout::option_name === Milk_Admin::option_name`.
+* Using `Milk_Layout::position` variable you can change the order of pages.
 
 That's all. Now you have a page for a theme admin area with 1 input, that saves data.
 All security checks should be done in `Milk_Layout::save()` method.
@@ -120,3 +122,5 @@ All security checks should be done in `Milk_Layout::save()` method.
 Below you can see how this all will look like. You can also see how data is stored in `wp-options` table.
 
 <a href="http://content.screencast.com/users/slaFFik/folders/Jing/media/af366039-e25a-45cd-bb0f-aad832bb5eb8/2013-01-10_1735.png"><img class="embeddedObject" src="http://content.screencast.com/users/slaFFik/folders/Jing/media/af366039-e25a-45cd-bb0f-aad832bb5eb8/2013-01-10_1735.png" width="655" height="451" border="0" />
+
+For more details please look into the `rutah.php` code. You will see some other interesting things there (I hope).
