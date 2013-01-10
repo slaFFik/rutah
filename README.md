@@ -33,11 +33,11 @@ In future this may be changed if more functionality needed.
 How to use Rutah?
 =====
 
-All (almost) themes have `functions.php` file. So just include there a file called `milk.php` with the code below:
+(Almost) all  themes have `functions.php` file. So just include there a file called `milk.php` with the code below:
 
     // check that we don't have parent class included elsewhere
     if(!class_exists('RutahThemeAdmin'))
-        include(OVIDI_PATH . '/_admin/rutah/rutah.php');
+        include(basename(__FILE__) . '/_admin/rutah/rutah.php');
 
     /**
      * The main class. Some vars should be defined.
@@ -62,7 +62,7 @@ All (almost) themes have `functions.php` file. So just include there a file call
     
     // ensure that we init admin area in WordPress admin area only
     if(is_admin()){
-        new OviDi_Admin;
+        new Milk_Admin;
     }
 
 That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Design section in WordPress sidebar navigation menu.
