@@ -113,6 +113,8 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
 That's all. Now you have a page for a theme admin area with 1 input, that saves data.
 All security checks should be done in `Milk_Layout::save()` method.
 
+-------------
+
 # Screenshot
 
 Below you can see how this all will look like. You can also see how data is stored in `wp-options` table.
