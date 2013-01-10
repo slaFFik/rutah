@@ -23,8 +23,8 @@ I use [Formee](http://www.formee.org/ "Framework to help you develop and customi
 
 `rutah.php` contains (currently) 2 classes:
 
-* RutahThemeAdmin (responsible for the whole logic and data management)
-* RutahThemeAdminPage (helper to easily add new pages, should be at least one)
+* **RutahThemeAdmin** (responsible for the whole logic and data management)
+* **RutahThemeAdminPage** (helper to easily add new pages, should be at least one)
 
 In future this may be changed if more functionality needed.
 
@@ -33,3 +33,36 @@ In future this may be changed if more functionality needed.
 How to use Rutah?
 =====
 
+All (almost) themes have `functions.php` file. So just include there a file called `milk.php` with the code below:
+
+    // check that we don't have parent class included elsewhere
+    if(!class_exists('RutahThemeAdmin'))
+        include(OVIDI_PATH . '/_admin/rutah/rutah.php');
+
+    /**
+     * The main class. Some vars should be defined.
+     */
+    class Milk_Admin extends RutahThemeAdmin{
+        // required options
+        var $option_name = 'milk';
+        var $ver         = '1.0';
+    
+        function __construct(){
+            // required options
+            $this->page       = __('Milk Theme Options', 'milk');
+            $this->tagline    = __('With Flexibility in Mind', 'milk');
+            // define the place where all our admin area pages will be placed
+            $this->pages_path = dirname(__FILE__) . '/pages';
+        
+            // required line
+            parent::__construct();
+        }
+    
+    }
+    
+    // ensure that we init admin area in WordPress admin area only
+    if(is_admin()){
+        new OviDi_Admin;
+    }
+
+That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Design section in WordPress sidebar navigation menu.
