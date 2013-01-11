@@ -39,35 +39,35 @@ In future this may be changed if more functionality needed.
 (Almost) all  themes have `functions.php` file. So just include there a file called `milk.php` with the code below:
 
 ```php
-    // check that we don't have parent class included elsewhere
-    if(!class_exists('RutahThemeAdmin'))
-        include(basename(__FILE__) . '/_admin/rutah/rutah.php');
+// check that we don't have parent class included elsewhere
+if(!class_exists('RutahThemeAdmin'))
+    include(basename(__FILE__) . '/_admin/rutah/rutah.php');
 
-    /**
-     * The main class. Some vars should be defined.
-     */
-    class Milk_Admin extends RutahThemeAdmin{
+/**
+ * The main class. Some vars should be defined.
+ */
+class Milk_Admin extends RutahThemeAdmin{
+    // required options
+    var $option_name = 'milk';
+    var $ver         = '1.0';
+    
+    function __construct(){
         // required options
-        var $option_name = 'milk';
-        var $ver         = '1.0';
-    
-        function __construct(){
-            // required options
-            $this->page       = __('Milk Theme Options', 'milk');
-            $this->tagline    = __('With Flexibility in Mind', 'milk');
-            // define the place where all our admin area pages will be placed
-            $this->pages_path = dirname(__FILE__) . '/pages';
+        $this->page       = __('Milk Theme Options', 'milk');
+        $this->tagline    = __('With Flexibility in Mind', 'milk');
+        // define the place where all our admin area pages will be placed
+        $this->pages_path = dirname(__FILE__) . '/pages';
         
-            // required line
-            parent::__construct();
-        }
-    
+        // required line
+        parent::__construct();
     }
     
-    // ensure that we init admin area in WordPress admin area only
-    if(is_admin()){
-        new Milk_Admin;
-    }
+}
+    
+// ensure that we init admin area in WordPress admin area only
+if(is_admin()){
+    new Milk_Admin;
+}
 ```
 
 That's it! Now we have admin area, that is accessible via the link called `Milk Theme Options` under Appearance section in WordPress sidebar navigation menu.
@@ -82,30 +82,30 @@ Its creation is easy as well. Here is the example of creating a page called *Lay
 2. Put the code provided below in that file.
 
 ```php
-    class Milk_Layout extends RutahThemeAdminPage{
-        var $position    = 1;
-        var $slug        = 'layout';
-        var $option_name = 'milk';
+class Milk_Layout extends RutahThemeAdminPage{
+    var $position    = 1;
+    var $slug        = 'layout';
+    var $option_name = 'milk';
         
-        function __construct(){
-            $this->title = __('Layout', 'ovidi');
-            
-            parent::__construct();
-        }
+    function __construct(){
+        $this->title = __('Layout', 'ovidi');
         
-        function display(){
-            echo '<input type="text" '.$this->form_get_name('slug').' value="'.$this->form_get_value('slug').'" />';
-            echo $this->form_get_submit();
-        }
-        
-        function save(){
-            parent::save();
-        
-            return $_POST[$this->option_name];
-        }
+        parent::__construct();
     }
+        
+    function display(){
+        echo '<input type="text" '.$this->form_get_name('slug').' value="'.$this->form_get_value('slug').'" />';
+        echo $this->form_get_submit();
+    }
+        
+    function save(){
+        parent::save();
     
-    return new Milk_Layout;
+        return $_POST[$this->option_name];
+    }
+}
+    
+return new Milk_Layout;
 ``` 
 
 **Note:** 
