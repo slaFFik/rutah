@@ -161,9 +161,9 @@ class RutahThemeAdmin{
         add_action('admin_print_scripts-' . $this->admin_page, array(&$this,'load_assets_js'));
     }
     function load_assets_js(){
-        wp_register_script('bpap_formee', $this->theme_url . '/_admin/rutah/js/formee.js', array('jquery'), '3.1');
+        wp_register_script('rutah_formee', $this->theme_url . '/_admin/rutah/js/formee.js', array('jquery'), '3.1');
 
-        wp_enqueue_script('bpap_formee');
+        wp_enqueue_script('rutah_formee');
     }
     function load_assets_css(){
         wp_register_style('rutah_admin_css', $this->theme_url . '/_admin/rutah/css/admin.css',  false, $this->ver);
@@ -182,7 +182,7 @@ class RutahThemeAdmin{
 
             <?php $this->display_header(); ?>
 
-            <form method="post" action="" enctype="multipart/form-data" class="formee">
+            <form method="post" action="" enctype="multipart/form-data" class="formee custom">
                 <?php
                 wp_nonce_field( $this->option_name . '-update-options' );
                 // all the content will appear right here
@@ -365,6 +365,11 @@ class RutahThemeAdminPage {
         // all checks will be below in child classes
     }
 
+    /************************* Markup Elements *************************/
+    /**
+     * Add new section - row
+     */
+
     /************************* Form Elements *************************/
     /**
      * Below are several helpers to make form items creation easier
@@ -377,13 +382,18 @@ class RutahThemeAdminPage {
         if(empty($name))
             return;
 
-        return $this->options[$this->slug][$name];
+        $value = false;
+
+        if(isset($this->options[$this->slug]) && isset($this->options[$this->slug][$name]))
+            return $this->options[$this->slug][$name];
+
+        return $value;
     }
 
     function form_get_submit($value = false){
         if(empty($value))
             $value = __('Save');
 
-        return '<input type="submit" value="'.$value.'" />';
+        return '<input type="submit" class="button" value="'.$value.'" />';
     }
 }
